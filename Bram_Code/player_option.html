@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Option</title>
+    <link rel="stylesheet" href="player_option.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Player Option</h1>
+
+    <div class="form-group">
+        <label>Player Name</label>
+        <input type="text" id="playerName" placeholder="Please enter your name..." value="Player1">
+        <small id="nameError"></small>
+    </div>
+
+    <div class="form-group">
+        <label>Snake Color</label>
+        <div class="color-picker">
+            <div class="color-option" data-color="#77dd77" style="background:#77dd77;"></div>
+            <div class="color-option" data-color="#84b6f4" style="background:#84b6f4;"></div>
+            <div class="color-option" data-color="#ff6961" style="background:#ff6961;"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Difficulty</label>
+        <div class="custom-dropdown" id="difficultyDropdown">
+            <div class="dropdown-selected">Easy</div>
+            <div class="dropdown-options">
+                <div class="dropdown-item" data-value="easy">Easy</div>
+                <div class="dropdown-item" data-value="medium">Medium</div>
+                <div class="dropdown-item" data-value="hard">Hard</div>
+            </div>
+        </div>
+    </div>
+    
+    <button id="startBtn">Start Game</button>
+
+    <div class="popup-overlay" id="popup">
+        <div class="popup-box">
+
+            <h2>Ready to Play?</h2>
+
+            <p id="summaryName"></p>
+            <p id="summaryDifficulty"></p>
+
+            <div class="popup-actions">
+                <button id="backBtn" class="btn-back">←</button>
+                <button id="continueBtn" class="btn-continue">Continue</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="player_option.js"></script>
+</body>
+</html>

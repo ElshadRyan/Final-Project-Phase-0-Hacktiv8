@@ -1,0 +1,55 @@
+body {
+  background-image: url(./assets/background/background1.jpg);
+  /* background-color: #0f172a; */
+  /* color: white; */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  .menu-box {
+      text-align: center;
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      width: 320px;
+    }
+    .menu-box .btn {
+      width: 100%;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 600;
+}
+
+.suek {
+ font-family: 'Press Start 2P', cursive;
+  font-size: 45px;
+  color: #39ba1c;
+  text-shadow: 
+    2px 2px 0px #14532d,
+    4px 4px 0px #052e16;
+
+  margin-bottom: 40px; 
+}
+
+@keyframes glowBlink {
+  0% {
+    text-shadow: 0 0 5px #ed2121;
+  }
+  100% {
+    text-shadow: 0 0 10px #ed2121;
+  }
+}
+
+.suek {
+  animation: glowBlink 1s infinite alternate;
+}
+
+button {
+  width: 200px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
