@@ -91,13 +91,23 @@ backBtn.onclick = function () {
     popup.classList.remove("active");
 };
 
+var playerOption = {
+        name: "",
+        snakeColour: "",
+        difficulty: ""
+    };
+
+export function getPlayerOption()
+{
+    return playerOption
+}
+
 continueBtn.onclick = function () {
 
-    var playerOption = {
-        name: nameInput.value.trim(),
-        snakeColour: selectedColor,
-        difficulty: selectedDifficulty
-    };
+    playerOption.name = nameInput.value.trim()
+    playerOption.snakeColour = selectedColor
+    playerOption.difficulty = selectedDifficulty
+    
 
     localStorage.setItem("playerOption", JSON.stringify(playerOption));
 
