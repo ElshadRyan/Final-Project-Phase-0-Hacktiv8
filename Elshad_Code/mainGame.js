@@ -208,7 +208,7 @@ function creatingFood(row, col, snakePosition)
         tempFoodCoordinate.push(Math.floor(Math.random()*row) - tableHeightRadius)
         tempFoodCoordinate.push(Math.floor(Math.random()*col) - tableWidthRadius)  
             
-        console.log(tempFoodCoordinate);
+        // console.log(tempFoodCoordinate);
         for (let i = 0; i < snakePosition.length; i++) {
             if(tempFoodCoordinate[0] === snakePosition[i][0] && tempFoodCoordinate[1] === snakePosition[i][1])
             {
@@ -226,7 +226,7 @@ function creatingFood(row, col, snakePosition)
         }
     }        
     
-    if(!isEaten)
+    if(isEaten)
     {
         foodPosition = foodCoordinate
     }
@@ -240,8 +240,8 @@ function creatingFood(row, col, snakePosition)
                     let idToSearch = "" + (i - tableHeightRadius)
                     idToSearch += (j - tableWidthRadius)
                     let tableCoordinates = document.getElementById(idToSearch)
-                    console.log(tableCoordinates);
-                    isEaten = true
+                    // console.log(tableCoordinates);
+                    isEaten = false
                     tableCoordinates.setAttribute("style", "background-color: red")
 
                 }
@@ -252,15 +252,35 @@ function creatingFood(row, col, snakePosition)
 
 function detectingObstacles(snakePosition, foodCoordinate, row, col)
 {
-    tableHeightRadius = Math.ceil(row.length/2)
-    tableWidthRadius = Math.ceil(col.length/2)
-    for(let k = 0; k < snakePosition.length; k++)
+    tableHeightRadius = Math.ceil(row/2)
+    tableWidthRadius = Math.ceil(col/2)
+
+    let snakeRowPos = snakePosition[0][0]
+    let snakeColPos = snakePosition[0][1]
+
+    if((snakeColPos + tableHeightRadius) === col || (snakeRowPos + tableWidthRadius) === row || (snakeRowPos + tableHeightRadius) < 0 || (snakeColPos + tableWidthRadius) < 0)
     {
-        if(row > (snakePosition[k][0] + tableHeightRadius) || col > (snakePosition[k][1] + tableWidthRadius))
+        isPlaying = false
+    }
+    
+
+    if(snakePosition[0][0] === foodCoordinate[0] && snakePosition[0][1] === foodCoordinate[1])
+    {
+        playerData.score++
+        isEaten = true
+        let snakeLastIndex = snakePosition.length-1
+        snakePosition.push(snakePosition[snakeLastIndex])
+        // console.log(playerData.score);
+    }
+
+    for (let i = 1; i < snakePosition.length; i++) {
+        if((snakePosition[i][0] === snakeRowPos && snakePosition[i][1] === snakeColPos))
         {
             isPlaying = false
+            break
         }
     }
+
 }
     
 let valueBody = [
@@ -277,10 +297,13 @@ let valueBody = [
 ,[" "," "," "," "," "," "," "," "," "," "," "]
 ]
 
+let playerData = {
+    score: 0
+}
 let snakePositionData = [[0,0], [1,0], [2,0]]
 let positionSnakeToAdd = [0,0]
 let foodPosition = []
-let isEaten = false
+let isEaten = true
 let isPlaying = true
 
 let playerOption = 
@@ -292,7 +315,7 @@ let playerOption =
 
 
 appendingDiv("section1", "section1", "main")
-let fps = 1000/10
+let fps = 1000/5
 
 // fetch("http://127.0.0.1:5500/Elshad_Code/gamplayWeb.html")
 // window.location.reload()
@@ -308,13 +331,14 @@ function main(timestamp)
         {
             tableToRemove.remove()
         }
+
+        getCreatedTable("snake_table", "snake_table", "section1")
+        creatingTableValue("snake_table", valueBody)
+        positioningTheSnakes(snakePositionData, valueBody)
+        creatingFood(valueBody.length, valueBody[0].length, snakePositionData)
         
         if(isPlaying)
         {
-            getCreatedTable("snake_table", "snake_table", "section1")
-            creatingTableValue("snake_table", valueBody)
-            positioningTheSnakes(snakePositionData, valueBody)
-            creatingFood(valueBody.length, valueBody[0].length, snakePositionData)
             window.addEventListener("load", playerInputToChangeSnakePosition(snakePositionData))
             let tempSnakePositionData = adding2MatrixOrPosition(snakePositionData, positionSnakeToAdd)
             if(tempSnakePositionData !== null)
