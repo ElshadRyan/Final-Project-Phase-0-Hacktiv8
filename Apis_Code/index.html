@@ -10,6 +10,7 @@
   <!--Untuk Font-->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,50 +18,109 @@
 
 
   <div class="container text-center d-flex flex-column align-items-center justify-content-center vh-100">
-      <h1 class="suek">SNAKE'S GAME</h1>
-      <!--Untuk button Pertama-->
-      <button class="btn btn-primary mb-3 w-25" >Start</button>
-      <!--Untuk button Kedua -->
-      <button class="btn btn-warning mb-3 w-25" data-bs-toggle="modal" data-bs-target="#optionModal">Option</button>
-      <!-- Untuk Button Ketiga -->
-      <button class="btn btn-info w-25" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>
+      <h1 class="suek">
+        <span>S</span>
+        <span>N</span>
+        <span>A</span>
+        <span>K</span>
+        <span>E</span>
+        <span>'</span>
+        <span>S</span>
+        <span>&nbsp;</span>
+        <span>G</span>
+        <span>A</span>
+        <span>M</span>
+        <span>E</span>
+      </h1>
+
+      <button class="pixel-btn mt-4" data-bs-toggle="modal" data-bs-target="#startModal">
+        START
+      </button>
   </div>
 
-  <!-- Untuk Option -->
-<!-- Modal Option -->
-  <div class="modal fade" id="optionModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content text-dark rounded-4">
-        <div class="modal-header">
-          <h5 class="modal-title">Option</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <button class="btn btn-primary w-100 mb-3">Ganti Bahasa</button>
-          <button class="btn btn-danger w-100 mb-3">Mute Music</button>
-          <button class="btn btn-secondary w-100" data-bs-dismiss="modal">Back</button>
-        </div>
+  <div class="modal fade" id="startModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content pixel-box text-center">
+      
+      <div class="modal-body">
+        <h5 class="mb-4">START GAME?</h5>
+
+        <button class="pixel-btn me-2" id="yesBtn">YES</button>
+        <button class="pixel-btn" data-bs-dismiss="modal">NO</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ICON MENU -->
+<div class="game-menu">
+  <button class="icon-btn" id="musicBtn">🎵</button>
+  <button class="icon-btn" data-bs-toggle="modal" data-bs-target="#leaderboardModal">🏆</button>
+  <button class="icon-btn" data-bs-toggle="modal" data-bs-target="#creditModal">ℹ️</button>
+</div>
+ 
+
+<div class="modal fade" id="leaderboardModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content pixel-box text-center">
+      <div class="modal-body">
+        <h5>LEADERBOARD</h5>
+        <p>Bukan kerjaan gua yaaa, backeenndd. Wkwkwkw</p>
       </div>
     </div>
   </div>
-  
-   <!-- Modal About -->
-  <div class="modal fade" id="aboutModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content text-dark rounded-4">
-        <div class="modal-header">
-          <h5 class="modal-title">About</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p>Ini adalah halaman about untuk informasi game/aplikasi.</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+</div>
+
+<!--CREDIT-->
+<div class="modal fade" id="creditModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content pixel-box text-center">
+
+      <!-- HEADING -->
+      <div class="credit-header">
+        <h3>CREDITS</h3>
+        <p class="credit-desc">
+          This game was crafted with passion, chaos, and a bit of late-night madness.<br>
+          Built by a team of dreamers who turned ideas into pixels.
+        </p>
+      </div>
+
+      <!-- SCROLL AREA -->
+      <div class="modal-body credit-container">
+        <div class="credit-scroll">
+
+          <div class="credit-item">
+            <img src="./assets/foto/saskeeh.jpg">
+            <p>Hafis - The Vibe Coder</p>
+          </div>
+
+          <div class="credit-item">
+            <img src="./assets/foto/saskeeh.jpg">
+            <p>Elshad - Wibu Sejati</p>
+          </div>
+
+          <div class="credit-item">
+            <img src="./assets/foto/saskeeh.jpg">
+            <p>Kink Bimo</p>
+          </div>
+
+          <div class="credit-item">
+            <img src="./assets/foto/saskeeh.jpg">
+            <p>Hafiz Pake Z</p>
+          </div>
+
         </div>
       </div>
+
     </div>
   </div>
+</div>
+
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+ <script src="index.js"></script>
+ <audio id="hoverSound" src="./assets/sound/klik.mp3"></audio>
+ <audio id="clickSound" src="./assets/sound/klik.mp3"></audio>
+ <audio id="bgMusic" src="./assets/music/coffe-musikkkk.mp3" loop></audio>
 </body>
 </html>
