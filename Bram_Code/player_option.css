@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
+    background: linear-gradient(to bottom, #87ceeb 0%, #87ceeb 60%, #6ecf6e 60%, #4caf50 100%);
     color: white;
     min-height: 100vh;
     display: flex;
@@ -9,23 +9,125 @@ body {
     justify-content: center;
 }
 
+.background-decor {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.sun {
+    position: absolute;
+    top: 60px;
+    right: 80px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #ffd54f, #ffb300);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255, 200, 0, 0.6);
+}
+
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50px;
+    opacity: 0.9;
+}
+
+.cloud::before,
+.cloud::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+.cloud1 {
+    top: 80px;
+    left: 60px;
+    width: 80px;
+    height: 40px;
+}
+
+.cloud1::before {
+    width: 40px;
+    height: 40px;
+    top: -20px;
+    left: 10px;
+}
+
+.cloud1::after {
+    width: 50px;
+    height: 50px;
+    top: -25px;
+    left: 30px;
+}
+
+.cloud2 {
+    top: 140px;
+    left: 200px;
+    width: 100px;
+    height: 50px;
+}
+
+.cloud2::before {
+    width: 50px;
+    height: 50px;
+    top: -20px;
+    left: 20px;
+}
+
+.cloud2::after {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    left: 50px;
+}
+
+.trees {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 40px;
+}
+
+.tree {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 60px solid #2e7d32;
+    position: relative;
+}
+
+.tree::after {
+    content: "";
+    position: absolute;
+    top: 60px;
+    left: -5px;
+    width: 10px;
+    height: 20px;
+    background: #5d4037;
+}
+
 .container {
     width: 360px;
-    margin: 80px auto;
     padding: 32px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     text-align: center;
     animation: fadeIn 0.6s ease;
 }
 
 h1 {
     margin-bottom: 28px;
-    font-size: 28px;
-    letter-spacing: 1px;
-    text-align: center;
+    font-size: 26px;
+    letter-spacing: 2px;
 }
 
 .form-group {
@@ -35,26 +137,24 @@ h1 {
 
 label {
     font-size: 13px;
-    color: #bbb;
+    color: #e0e0e0;
     margin-bottom: 8px;
     display: block;
-    text-align: left;
 }
 
 input {
     width: 100%;
     padding: 12px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+    font-size: 14px;
     color: white;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-    transition: all 0.25s ease;
+    background: #1e1e1e;
+    border: 2px solid #2e2e2e;
+    outline: none;
+    box-shadow: inset 0 0 0 2px #000, 0 3px 0 #000;
 }
 
 input:focus {
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 0 2px rgba(119,221,119,0.3);
+    border-color: #6ecf6e;
 }
 
 .color-picker {
@@ -70,7 +170,6 @@ input:focus {
     cursor: pointer;
     border: 2px solid transparent;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
 
 .color-option:hover {
@@ -79,7 +178,7 @@ input:focus {
 
 .color-option.selected {
     transform: scale(1.1);
-    box-shadow: inset 0 3px 10px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 3px 10px rgba(0,0,0,0.6);
 }
 
 .custom-dropdown {
@@ -89,9 +188,9 @@ input:focus {
 
 .dropdown-selected {
     padding: 12px;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    background: #1e1e1e;
+    border: 2px solid #2e2e2e;
+    box-shadow: inset 0 0 0 2px #000, 0 3px 0 #000;
 }
 
 .dropdown-options {
@@ -100,13 +199,11 @@ input:focus {
     left: 0;
     right: 0;
     background: #1a1a1a;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-    overflow: hidden;
+    border: 2px solid #2e2e2e;
     opacity: 0;
     transform: translateY(-10px);
     pointer-events: none;
-    transition: 0.25s ease;
+    transition: 0.2s ease;
     z-index: 10;
 }
 
@@ -118,50 +215,40 @@ input:focus {
 
 .dropdown-item {
     padding: 12px;
-    transition: 0.2s;
+    border-bottom: 1px solid #222;
 }
 
 .dropdown-item:hover {
-    background: rgba(255,255,255,0.05);
-    transform: translateX(5px);
+    background: #2a2a2a;
 }
 
 button {
     width: 100%;
     padding: 14px;
-    border: none;
-    border-radius: 12px;
     font-weight: bold;
-    font-size: 15px;
-    background: linear-gradient(135deg, #77dd77, #4ecb71);
+    font-size: 16px;
+    color: #ffffff;
+    background: #f7b500;
+    border: none;
     cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 8px 20px rgba(119,221,119,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 0 #c48f00, 0 8px 0 #8a6500, 0 12px 0 #5a4200;
+    transition: all 0.1s ease;
 }
 
 button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(119,221,119,0.5);
+    transform: translateY(-2px);
 }
 
 button:active {
-    transform: scale(0.96);
+    transform: translateY(6px);
+    box-shadow: 0 2px 0 #c48f00, 0 4px 0 #8a6500;
 }
 
 small {
     color: #ff6b6b;
     font-size: 12px;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .popup-overlay {
@@ -170,15 +257,13 @@ small {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
     transition: 0.3s ease;
-    z-index: 100;
 }
 
 .popup-overlay.active {
@@ -189,26 +274,10 @@ small {
 .popup-box {
     width: 320px;
     padding: 24px;
-    border-radius: 16px;
-    background: linear-gradient(145deg, #1e1e1e, #121212);
-    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    background: #1b1b1b;
     box-shadow: 0 10px 40px rgba(0,0,0,0.7);
     text-align: center;
-    transform: translateY(20px);
-    transition: 0.3s ease;
-}
-
-.popup-overlay.active .popup-box {
-    transform: translateY(0);
-}
-
-.popup-box h2 {
-    margin-bottom: 16px;
-}
-
-.popup-box p {
-    margin: 6px 0;
-    color: #bbb;
 }
 
 .popup-actions {
@@ -220,29 +289,23 @@ small {
 .btn-back {
     width: 60px;
     padding: 12px;
-    border-radius: 10px;
-    border: none;
     background: #2a2a2a;
     color: white;
+    border: none;
     cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-back:hover {
-    background: #3a3a3a;
 }
 
 .btn-continue {
     flex: 1;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    font-weight: bold;
-    background: linear-gradient(135deg, #77dd77, #4ecb71);
-    cursor: pointer;
-    transition: 0.2s;
 }
 
-.btn-continue:hover {
-    transform: translateY(-2px);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
