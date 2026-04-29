@@ -485,9 +485,9 @@ appendingDiv("section2", "leaderboard", "main")
 
 
 
-let fps = 1000/playerChoice.difficulties.easy.speed
+let fps = 1000/playerChoice.difficulties.medium.speed
 // console.log(fps);
-valueBody = playerChoice.difficulties.easy.areaSize
+valueBody = playerChoice.difficulties.medium.areaSize
 // console.log(valueBody);
 
 // fetch("http://127.0.0.1:5500/Elshad_Code/gamplayWeb.html")
