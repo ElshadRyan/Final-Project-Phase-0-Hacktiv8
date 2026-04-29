@@ -21,7 +21,7 @@ function appendingDiv(divId, divClass, IdToAppend)
     appendedId.append(div)
 }
 
-function getCreatedTable(tableId, tableClass, IdToAppend)
+function creatingTable(tableId, tableClass, IdToAppend)
 {
     if(!IdToAppend)
     {
@@ -83,8 +83,8 @@ function creatingTableBody(value, tableElement)
             coordinateID +=  (indexRow - tableWidthRadius ) 
             dataTable.setAttribute("id", coordinateID)
             dataTable.setAttribute("style", "background-color: black")
-            dataTable.setAttribute("width", "10px")
-            dataTable.setAttribute("height", "10px")
+            dataTable.setAttribute("width", "15px")
+            dataTable.setAttribute("height", "15px")
             dataTable.innerHTML = value
             rowTable.append(dataTable)
         });
@@ -270,7 +270,7 @@ function detectingObstacles(snakePosition, foodCoordinate, row, col)
         isEaten = true
         let snakeLastIndex = snakePosition.length-1
         snakePosition.push(snakePosition[snakeLastIndex])
-        // console.log(playerData.score);
+        console.log(playerData.score);
     }
 
     for (let i = 1; i < snakePosition.length; i++) {
@@ -283,6 +283,59 @@ function detectingObstacles(snakePosition, foodCoordinate, row, col)
 
 }
     
+//Update or Create
+function pushingDataToLocalStorage(data)
+{
+    localStorage.setItem(`${data.name}`, JSON.stringify(data))
+}
+
+//Read
+function readingDataFromLocalStorage()
+{
+    let allKeys = []
+    let allValue = []
+
+    for(let i = 0; i < localStorage.length; i++)
+    {
+        let currKey = localStorage.key(i)
+        allKeys.push(currKey)
+        allValue.push(JSON.parse(localStorage.getItem(currKey)))
+    }
+}
+
+//delete
+function deleteDataFromLocalStorage(data)
+{
+    localStorage.removeItem(`${data.name}`)
+}
+
+function sortingData(keys, values)
+{
+    for(let i = 0; i < keys.length; i++)
+    {
+        let tempChar = ''
+        let tempValue = {}
+        for(let j = 0; j < keys.length; j++)
+        {
+            if(values[j].score < values[j+1].score)
+            {
+                tempChar = keys[j]
+                keys[j] = keys[j+1]
+                keys[j+1] = tempChar
+
+                tempValue = values[j]
+                values[j] = values[j+1]
+                values[j+1] = tempValue
+            }
+        }
+    }
+}
+
+function leaderboard()
+{
+    
+}
+
 let valueBody = [
  [" "," "," "," "," "," "," "," "," "," "," "]
 ,[" "," "," "," "," "," "," "," "," "," "," "]
@@ -297,22 +350,17 @@ let valueBody = [
 ,[" "," "," "," "," "," "," "," "," "," "," "]
 ]
 
-let playerData = {
-    score: 0
-}
+
 let snakePositionData = [[0,0], [1,0], [2,0]]
 let positionSnakeToAdd = [0,0]
 let foodPosition = []
 let isEaten = true
 let isPlaying = true
 
-let playerOption = 
-{
-    name: '',
-    difficulty: '',
-    snakeColour: ''
+let playerData = {
+    score: 0,
+    name: '' 
 }
-
 
 appendingDiv("section1", "section1", "main")
 let fps = 1000/5
@@ -332,7 +380,7 @@ function main(timestamp)
             tableToRemove.remove()
         }
 
-        getCreatedTable("snake_table", "snake_table", "section1")
+        creatingTable("snake_table", "snake_table", "section1")
         creatingTableValue("snake_table", valueBody)
         positioningTheSnakes(snakePositionData, valueBody)
         creatingFood(valueBody.length, valueBody[0].length, snakePositionData)
