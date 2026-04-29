@@ -9,7 +9,7 @@ if (!playerOption) {
 /* ===================== GAME STATE ===================== */
 
 let snakePositionData = [[0,0], [1,0], [2,0]];
-let positionSnakeToAdd = [0, 1];
+let positionSnakeToAdd = [0, 0];
 
 let foodPosition = [];
 let isPlaying = true;
@@ -94,17 +94,11 @@ window.addEventListener("keydown", (event) => {
 
     if (event.key === "ArrowUp" || event.key === "w") {
         if (positionSnakeToAdd[0] !== 1) positionSnakeToAdd = [-1, 0];
-    }
-
-    if (event.key === "ArrowDown" || event.key === "s") {
+    }else if (event.key === "ArrowDown" || event.key === "s") {
         if (positionSnakeToAdd[0] !== -1) positionSnakeToAdd = [1, 0];
-    }
-
-    if (event.key === "ArrowLeft" || event.key === "a") {
+    }else if (event.key === "ArrowLeft" || event.key === "a") {
         if (positionSnakeToAdd[1] !== 1) positionSnakeToAdd = [0, -1];
-    }
-
-    if (event.key === "ArrowRight" || event.key === "d") {
+    }else if (event.key === "ArrowRight" || event.key === "d") {
         if (positionSnakeToAdd[1] !== -1) positionSnakeToAdd = [0, 1];
     }
 });
@@ -127,6 +121,89 @@ function moveSnake() {
     }
 
     snakePositionData = newSnake;
+}
+
+/* ===================== LOCAL STORAGE ===================== */
+
+function pushingDataToLocalStorage(data) {
+    if (data.name.length === 0) return;
+    localStorage.setItem(data.name, JSON.stringify(data));
+}
+
+function readingDataFromLocalStorage() {
+
+    let keys = [];
+    let values = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let k = localStorage.key(i);
+        keys.push(k);
+        values.push(JSON.parse(localStorage.getItem(k)));
+    }
+
+    return [keys, values];
+}
+
+function sortingData(keys, values) {
+
+    for (let i = 0; i < keys.length; i++) {
+        for (let j = 0; j < keys.length - 1; j++) {
+
+            if (values[j + 1]) {
+
+                if (values[j].score < values[j + 1].score) {
+
+                    let temp = values[j];
+                    values[j] = values[j + 1];
+                    values[j + 1] = temp;
+
+                    let tempKey = keys[j];
+                    keys[j] = keys[j + 1];
+                    keys[j + 1] = tempKey;
+                }
+            }
+        }
+    }
+
+    return values;
+}
+
+function deletePlayer(name) {
+    localStorage.removeItem(name);
+}
+
+function clearLeaderboard() {
+    localStorage.clear();
+}
+/* ===================== LEADERBOARD ===================== */
+
+function leaderboard() {
+
+    let allData = readingDataFromLocalStorage();
+    let sorted = sortingData(allData[0], allData[1]);
+    const TOP_10 = 10
+
+    creatingTable("leaderboard", "leaderboard", "section2");
+
+    let table = document.getElementById("leaderboard");
+
+    for (let i = 0; i < TOP_10; i++) {
+
+        if (!sorted[i]) continue;
+
+        let tr = document.createElement("tr");
+
+        let tdName = document.createElement("td");
+        tdName.innerHTML = sorted[i].name;
+
+        let tdScore = document.createElement("td");
+        tdScore.innerHTML = sorted[i].score;
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdScore);
+
+        table.appendChild(tr);
+    }
 }
 
 /* ===================== FOOD ===================== */
@@ -173,10 +250,10 @@ function checkCollision() {
 
     // WALL COLLISION FIX (AKURAT, NO EARLY DEATH)
     if (
-        head[0] <= -maxRow ||
-        head[0] >= maxRow ||
-        head[1] <= -maxCol ||
-        head[1] >= maxCol
+        head[0] < -maxRow ||
+        head[0] > maxRow ||
+        head[1] < -maxCol ||
+        head[1] > maxCol
     ) {
         isPlaying = false;
     }
@@ -220,12 +297,17 @@ function render() {
 /* ===================== INIT ===================== */
 
 appendingDiv("section1", "theGame", "main");
+appendingDiv("section2", "leaderboard", "main");
 
 creatingTable("snake_table", "snake_table", "section1");
 creatingTableValue("snake_table", valueBody);
 
 spawnFood();
 render(); // FIX: biar langsung keliatan
+
+
+
+leaderboard()
 
 /* ===================== LOOP ===================== */
 
