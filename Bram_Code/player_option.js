@@ -93,11 +93,11 @@ backBtn.onclick = function () {
 
 continueBtn.onclick = function () {
 
-    var playerOption = {
-        name: nameInput.value.trim(),
-        snakeColour: selectedColor,
-        difficulty: selectedDifficulty
-    };
+    // var playerOption = {
+    //     name: nameInput.value.trim(),
+    //     snakeColour: selectedColor,
+    //     difficulty: selectedDifficulty
+    // };
 
     localStorage.setItem("playerOption", JSON.stringify(playerOption));
 
