@@ -22,14 +22,14 @@ function appendingDiv(divId, divClass, IdToAppend)
     appendedId.append(div)
 }
 
-function appendingParagraph(pId, pClass, value, IdToAppend)
+function appendingSpan(pId, pClass, value, IdToAppend)
 {
     if(!IdToAppend)
     {
         return "id to append is required"
     }
     let appendedId = document.getElementById(IdToAppend)
-    let p = document.createElement("p")
+    let p = document.createElement("span")
     if(pId)
     {
         p.setAttribute("id", pId)
@@ -318,6 +318,10 @@ function detectingObstacles(snakePosition, foodCoordinate, row, col)
 //Update or Create
 function pushingDataToLocalStorage(data)
 {
+    if(data.name.length === 0)
+    {
+        return
+    }
     localStorage.setItem(`${data.name}`, JSON.stringify(data))
 }
 
@@ -350,22 +354,31 @@ function sortingData(keys, values)
         return values
     }
 
+
+    
     for(let i = 0; i < keys.length; i++)
     {
         let tempChar = ''
         let tempValue = {}
         for(let j = 0; j < keys.length; j++)
         {
-            if(values[j].score < values[j+1].score)
-            {
-                tempChar = keys[j]
-                keys[j] = keys[j+1]
-                keys[j+1] = tempChar
+            console.log(values[j]);
+            console.log(j);
 
-                tempValue = values[j]
-                values[j] = values[j+1]
-                values[j+1] = tempValue
+            if(values[j+1])
+            {
+                if(values[j].score < values[j+1].score)
+                {
+                    tempChar = keys[j]
+                    keys[j] = keys[j+1]
+                    keys[j+1] = tempChar
+
+                    tempValue = values[j]
+                    values[j] = values[j+1]
+                    values[j+1] = tempValue
+                }
             }
+            
         }
     }
 
@@ -375,49 +388,74 @@ function sortingData(keys, values)
 function leaderboard(divToAppendWithList)
 {
     let allData = readingDataFromLocalStorage()
+    console.log(allData);
     let dataSorted = sortingData(allData[0], allData[1])
     const TOP_10 = 10
     
     // console.log(dataSorted[0][0].name);
     let divToAppend = document.getElementById(divToAppendWithList)
+    creatingTable("leaderboard", "leaderboard", "section2")
 
-    let unorderedList = document.createElement("ul")
-    unorderedList.setAttribute("id", "leaderboardList")
-    unorderedList.setAttribute("class", "leaderboardList")
-
-    divToAppend.append(unorderedList)
+    let tableToAppend = document.getElementById("leaderboard")
 
     for(let i = 0; i < TOP_10; i++)
     {
-        
         if(!dataSorted[i])
         {
             continue
         }
-        let currList = document.createElement("li")
-        currList.setAttribute("id", `${dataSorted[i].name}`)
-        currList.setAttribute("class", `${dataSorted[i].name}`)
+        let tableRow = document.createElement("tr")
         
-        unorderedList.append(currList)
-        // console.log(`${dataSorted[i].name}`);
+        tableToAppend.append(tableRow)
 
-        appendingDiv(`name:${dataSorted[i].name}`, `name:${dataSorted[i].name}`, `${dataSorted[i].name}`)
-        appendingDiv(`score:${dataSorted[i].score}`, `score:${dataSorted[i].score}`, `${dataSorted[i].name}`)
-        
-        let nameIdAppend = `name:${dataSorted[i].name}`
-        let scoreIdAppend = `score:${dataSorted[i].score}`
-        
-        // console.log(nameIdAppend);
-        // console.log(scoreIdAppend);
+        let tableDataNama = document.createElement("td")
+        tableDataNama.innerHTML = dataSorted[i].name
+        tableRow.append(tableDataNama)
 
-
-        appendingParagraph(undefined, undefined, dataSorted[i].name, `${nameIdAppend}`)
-        appendingParagraph(undefined, undefined, dataSorted[i].score, `${scoreIdAppend}`)
+        let tableDataScore = document.createElement("td")
+        tableDataScore.innerHTML = dataSorted[i].score
+        tableRow.append(tableDataScore)
     }
+
+    for(let i = 0; i < TOP_10; i++)
+    {
+        if(!dataSorted[i])
+        {
+            continue
+        }
+        
+    }
+
+
+    // let unorderedList = document.createElement("ul")
+    // unorderedList.setAttribute("id", "leaderboardList")
+    // unorderedList.setAttribute("class", "leaderboardList")
+
+    // let listAllScore = document.createElement("li")
+    // listAllScore.setAttribute("id", "allScore")
+    // listAllScore.setAttribute("class", "allScore")
+
+    // let listAllName = document.createElement("li")
+    // listAllName.setAttribute("id", "allName")
+    // listAllName.setAttribute("class", "allName")
+
+    // divToAppend.append(unorderedList)
+    // unorderedList.append(listAllName)
+    // unorderedList.append(listAllScore)
+
+    // for(let i = 0; i < TOP_10; i++)
+    // {
+    //     if(!dataSorted[i])
+    //     {
+    //         continue
+    //     }
+    //     appendingSpan(undefined,undefined,dataSorted[i].name, "allName")
+    //     appendingSpan(undefined,undefined,dataSorted[i].score, "allScore")
+    // }
 }
 
 const playerChoice = {
-    difficulties: {easy: {speed: 15, areaSize: [21, 21]}, medium: {speed: 30, areaSize: [21, 41]}, hard: {speed: 60, areaSize: [41,81]}}
+    difficulties: {easy: {speed: 15, areaSize: [21, 21]}, medium: {speed: 30, areaSize: [25, 41]}, hard: {speed: 180, areaSize: [41,61]}}
 }
 
 let valueBody = []
@@ -436,11 +474,20 @@ let playerData = {
 appendingDiv("section1", "theGame", "main")
 appendingDiv("section2", "leaderboard", "main")
 
-pushingDataToLocalStorage({name: "Elshad", score: 10})
-leaderboard("section2")
-let fps = 1000/playerChoice.difficulties.hard.speed
+// pushingDataToLocalStorage({name: "Elshad", score: 10})
+// pushingDataToLocalStorage({name: "Bimo", score: 100})
+// pushingDataToLocalStorage({name: "Apis", score: 50})
+// pushingDataToLocalStorage({name: "Hafiz", score: 40})
+
+
+
+// leaderboard("section2")
+
+
+
+let fps = 1000/playerChoice.difficulties.easy.speed
 // console.log(fps);
-valueBody = playerChoice.difficulties.hard.areaSize
+valueBody = playerChoice.difficulties.easy.areaSize
 // console.log(valueBody);
 
 // fetch("http://127.0.0.1:5500/Elshad_Code/gamplayWeb.html")
