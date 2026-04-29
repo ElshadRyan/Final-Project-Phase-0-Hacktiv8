@@ -1,7 +1,12 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to bottom, #87ceeb 0%, #87ceeb 60%, #6ecf6e 60%, #4caf50 100%);
+    background: url("/Assets/Images/background.png") no-repeat center center;
+    background-size: cover;
     color: white;
     min-height: 100vh;
     display: flex;
@@ -9,119 +14,20 @@ body {
     justify-content: center;
 }
 
-.background-decor {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    z-index: 0;
-}
-
-.sun {
-    position: absolute;
-    top: 60px;
-    right: 80px;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, #ffd54f, #ffb300);
-    border-radius: 50%;
-    box-shadow: 0 0 40px rgba(255, 200, 0, 0.6);
-}
-
-.cloud {
-    position: absolute;
-    background: #ffffff;
-    border-radius: 50px;
-    opacity: 0.9;
-}
-
-.cloud::before,
-.cloud::after {
-    content: "";
-    position: absolute;
-    background: #ffffff;
-    border-radius: 50%;
-}
-
-.cloud1 {
-    top: 80px;
-    left: 60px;
-    width: 80px;
-    height: 40px;
-}
-
-.cloud1::before {
-    width: 40px;
-    height: 40px;
-    top: -20px;
-    left: 10px;
-}
-
-.cloud1::after {
-    width: 50px;
-    height: 50px;
-    top: -25px;
-    left: 30px;
-}
-
-.cloud2 {
-    top: 140px;
-    left: 200px;
-    width: 100px;
-    height: 50px;
-}
-
-.cloud2::before {
-    width: 50px;
-    height: 50px;
-    top: -20px;
-    left: 20px;
-}
-
-.cloud2::after {
-    width: 60px;
-    height: 60px;
-    top: -30px;
-    left: 50px;
-}
-
-.trees {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    padding: 0 40px;
-}
-
-.tree {
-    width: 0;
-    height: 0;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-bottom: 60px solid #2e7d32;
-    position: relative;
-}
-
-.tree::after {
-    content: "";
-    position: absolute;
-    top: 60px;
-    left: -5px;
-    width: 10px;
-    height: 20px;
-    background: #5d4037;
-}
-
 .container {
     width: 360px;
     padding: 32px;
-    border-radius: 16px;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border-radius: 0;
+    background: linear-gradient(to bottom, #1f2a1f, #0f1a0f);
+    border: 4px solid #000;
+    box-shadow: 
+        inset 0 0 0 2px #2e3d2e,
+        0 6px 0 #000,
+        0 10px 0 #000;
     text-align: center;
-    animation: fadeIn 0.6s ease;
+    z-index: 1;
+    outline: 3px solid #3a5f3a;
+    outline-offset: -8px;
 }
 
 h1 {
@@ -142,15 +48,16 @@ label {
     display: block;
 }
 
-input {
+input,
+.dropdown-selected {
     width: 100%;
+    height: 44px;
     padding: 12px;
     font-size: 14px;
     color: white;
-    background: #1e1e1e;
-    border: 2px solid #2e2e2e;
-    outline: none;
-    box-shadow: inset 0 0 0 2px #000, 0 3px 0 #000;
+    background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+    border: 2px solid #000;
+    box-shadow: inset 0 0 0 2px #111, 0 4px 0 #000;
 }
 
 input:focus {
@@ -178,19 +85,12 @@ input:focus {
 
 .color-option.selected {
     transform: scale(1.1);
-    box-shadow: inset 0 3px 10px rgba(0,0,0,0.6);
+    box-shadow: inset 0 5px 14px rgba(0,0,0,0.9), inset 0 -3px 8px rgba(0,0,0,0.6);
 }
 
 .custom-dropdown {
     position: relative;
     cursor: pointer;
-}
-
-.dropdown-selected {
-    padding: 12px;
-    background: #1e1e1e;
-    border: 2px solid #2e2e2e;
-    box-shadow: inset 0 0 0 2px #000, 0 3px 0 #000;
 }
 
 .dropdown-options {
@@ -199,7 +99,7 @@ input:focus {
     left: 0;
     right: 0;
     background: #1a1a1a;
-    border: 2px solid #2e2e2e;
+    border: 2px solid #000;
     opacity: 0;
     transform: translateY(-10px);
     pointer-events: none;

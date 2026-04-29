@@ -3,25 +3,20 @@ var nameInput = document.getElementById("playerName");
 var errorText = document.getElementById("nameError");
 
 var colorOptions = document.querySelectorAll(".color-option");
-var selectedColor = "#77dd77"; // default color
+var selectedColor = "#77dd77";
 
-// Default pilih warna pertama
 colorOptions[0].classList.add("selected");
 
-// Pilih warna
 for (var i = 0; i < colorOptions.length; i++) {
     colorOptions[i].onclick = function () {
-
         for (var j = 0; j < colorOptions.length; j++) {
             colorOptions[j].classList.remove("selected");
         }
-
         this.classList.add("selected");
         selectedColor = this.getAttribute("data-color");
     };
 }
 
-// Validasi nama realtime
 nameInput.oninput = function () {
     if (this.value.trim().length >= 3) {
         errorText.textContent = "";
@@ -29,7 +24,6 @@ nameInput.oninput = function () {
     }
 };
 
-// Dropdown difficulty
 var dropdown = document.getElementById("difficultyDropdown");
 var selected = dropdown.querySelector(".dropdown-selected");
 var items = dropdown.querySelectorAll(".dropdown-item");
@@ -40,7 +34,6 @@ selected.onclick = function () {
     dropdown.classList.toggle("active");
 };
 
-// Pilih difficulty
 for (var i = 0; i < items.length; i++) {
     items[i].onclick = function () {
         selected.innerText = this.innerText;
@@ -49,7 +42,6 @@ for (var i = 0; i < items.length; i++) {
     };
 }
 
-// Click luar = close dropdown
 document.onclick = function (e) {
     if (!dropdown.contains(e.target)) {
         dropdown.classList.remove("active");
@@ -62,7 +54,6 @@ var summaryDifficulty = document.getElementById("summaryDifficulty");
 var backBtn = document.getElementById("backBtn");
 var continueBtn = document.getElementById("continueBtn");
 
-// tombol start
 startBtn.onclick = function () {
     var name = nameInput.value.trim();
 
@@ -92,25 +83,17 @@ backBtn.onclick = function () {
 };
 
 var playerOption = {
-        name: "",
-        snakeColour: "",
-        difficulty: ""
-    };
-
-export function getPlayerOption()
-{
-    return playerOption
-}
+    name: "",
+    snakeColour: "",
+    difficulty: ""
+};
 
 continueBtn.onclick = function () {
-
-    playerOption.name = nameInput.value.trim()
-    playerOption.snakeColour = selectedColor
-    playerOption.difficulty = selectedDifficulty
-    
+    playerOption.name = nameInput.value.trim();
+    playerOption.snakeColour = selectedColor;
+    playerOption.difficulty = selectedDifficulty;
 
     localStorage.setItem("playerOption", JSON.stringify(playerOption));
 
-    console.log(playerOption);
+    window.location.href = "../Elshad_Code/gamplayWeb.html";
 };
-
