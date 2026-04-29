@@ -1,0 +1,20 @@
+body {
+  background-image: url(./assets/background/background1.jpg);
+  /* background-color: #0f172a; */
+  /* color: white; */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.suek {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 50px;
+  letter-spacing: 4px;
+}
+
+button {
+  width: 200px;
+  font-size: 18px;
+  border-radius: 10px;
+}
