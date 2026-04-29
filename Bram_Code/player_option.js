@@ -93,10 +93,7 @@ continueBtn.onclick = function () {
     playerOption.snakeColour = selectedColor;
     playerOption.difficulty = selectedDifficulty;
 
-    // localStorage.setItem("playerOption", JSON.stringify(playerOption));
-    window.location.href = "./Elshad_Code/gamplayWeb.html";
-
-
+    localStorage.setItem("playerOption", JSON.stringify(playerOption));
 
     window.location.href = "../Elshad_Code/gamplayWeb.html";
 };
