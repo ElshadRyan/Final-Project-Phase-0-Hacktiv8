@@ -6,32 +6,208 @@ body {
   background-position: center;
   background-size: cover;
 
-  .menu-box {
-      text-align: center;
-      padding: 40px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      width: 320px;
-    }
-    .menu-box .btn {
-      width: 100%;
-      margin-bottom: 12px;
-      border-radius: 12px;
-      padding: 12px;
-      font-weight: 600;
 }
 
-.suek {
- font-family: 'Press Start 2P', cursive;
-  font-size: 45px;
-  color: #39ba1c;
-  text-shadow: 
-    2px 2px 0px #14532d,
-    4px 4px 0px #052e16;
+/* FONT PIXEL */
+.pixel-btn, .pixel-box {
+  font-family: 'Press Start 2P', cursive;
+}
 
-  margin-bottom: 40px; 
+/* BUTTON PIXEL */
+.pixel-btn {
+  background: #f2b202;
+  color: #000;
+  border: none;
+  padding: 15px 25px;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 10px;
+
+  /* efek kotak pixel */
+  box-shadow: 
+    4px 4px 0 #14532d,
+    8px 8px 0 #052e16;
+
+  transition: all 0.1s ease-in-out;
+}
+
+/* efek ditekan */
+.pixel-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 
+    2px 2px 0 #14532d;
+}
+
+/* hover biar hidup */
+.pixel-btn:hover {
+  background: #4ade80;
+}
+
+/* BOX MODAL PIXEL */
+.pixel-box {
+  background: #111;
+  color: #39ff14;
+  border: 4px solid #39ff14;
+  padding: 30px;
+}
+
+.suek span {
+  display: inline-block;
+  animation: bounce 1s infinite;
+}
+
+
+.suek span:nth-child(1) { animation-delay: 0s; }
+.suek span:nth-child(2) { animation-delay: 0.1s; }
+.suek span:nth-child(3) { animation-delay: 0.2s; }
+.suek span:nth-child(4) { animation-delay: 0.3s; }
+.suek span:nth-child(5) { animation-delay: 0.4s; }
+.suek span:nth-child(6) { animation-delay: 0.5s; }
+.suek span:nth-child(7) { animation-delay: 0.6s; }
+.suek span:nth-child(8) { animation-delay: 0.7s; }
+.suek span:nth-child(9) { animation-delay: 0.8s; }
+.suek span:nth-child(10) { animation-delay: 0.9s; }
+.suek span:nth-child(11) { animation-delay: 1s; }
+.suek span:nth-child(12) { animation-delay: 1.1s; }
+
+.suek {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 40px;
+  letter-spacing: 4px;
+
+  color: #39ba1c;
+
+  text-shadow: 
+    0 0 5px #d10a0a,
+    0 0 10px #d10a0a,
+    2px 2px 0 #14532d;
+
+  image-rendering: pixelated;
+
+  
+}
+
+button {
+  width: 200px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+/* POSISI MENU */
+.game-menu {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+/* BUTTON PIXEL ICON */
+.icon-btn {
+  width: 55px;
+  height: 55px;
+
+  font-size: 20px;
+  font-family: 'Press Start 2P', cursive;
+
+  background: #111;
+  color: #39ff14;
+
+  border: 3px solid #39ff14;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow: 
+    4px 4px 0 #14532d,
+    8px 8px 0 #052e16;
+
+  transition: all 0.1s;
+}
+
+.icon-btn:hover {
+  background: #39ff14;
+  color: black;
+}
+
+.icon-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 
+    2px 2px 0 #14532d;
+}
+
+
+.credit-header {
+  padding: 20px;
+}
+
+.credit-header h3 {
+  font-family: 'Press Start 2P', cursive;
+  color: #39ff14;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #39ff14;
+}
+
+.credit-desc {
+  font-size: 10px;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+
+.credit-container {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.credit-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: scrollUp 12s linear infinite;
+}
+
+.credit-item {
+  margin: 20px 0;
+}
+
+.credit-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  border: 2px solid #39ff14;
+}
+
+.credit-item p {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  color: #39ff14;
+  margin-top: 10px;
+}
+
+.credit-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* ANIMASI */
+@keyframes scrollUp {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+
+/* Animasi naik turun */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes glowBlink {
@@ -42,14 +218,3 @@ body {
     text-shadow: 0 0 10px #ed2121;
   }
 }
-
-.suek {
-  animation: glowBlink 1s infinite alternate;
-}
-
-button {
-  width: 200px;
-  font-size: 18px;
-  border-radius: 10px;
-}
-
