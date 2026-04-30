@@ -9,7 +9,7 @@ if (!playerOption) {
 /* ===================== GAME STATE ===================== */
 
 let snakePositionData = [[0,0], [1,0], [2,0]];
-let positionSnakeToAdd = [0, 0];
+let positionSnakeToAdd = [-1, 0];
 
 let foodPosition = [];
 let isPlaying = true;
