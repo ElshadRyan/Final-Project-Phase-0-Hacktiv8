@@ -9,7 +9,7 @@ if (!playerOption) {
 /* ===================== GAME STATE ===================== */
 
 let snakePositionData = [[0,0], [1,0], [2,0]];
-let positionSnakeToAdd = [0, 1];
+let positionSnakeToAdd = [0, 0];
 
 let foodPosition = [];
 let isPlaying = true;
@@ -95,15 +95,12 @@ window.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp" || event.key === "w") {
         if (positionSnakeToAdd[0] !== 1) positionSnakeToAdd = [-1, 0];
     }
-
     if (event.key === "ArrowDown" || event.key === "s") {
         if (positionSnakeToAdd[0] !== -1) positionSnakeToAdd = [1, 0];
     }
-
     if (event.key === "ArrowLeft" || event.key === "a") {
         if (positionSnakeToAdd[1] !== 1) positionSnakeToAdd = [0, -1];
     }
-
     if (event.key === "ArrowRight" || event.key === "d") {
         if (positionSnakeToAdd[1] !== -1) positionSnakeToAdd = [0, 1];
     }
@@ -112,7 +109,7 @@ window.addEventListener("keydown", (event) => {
 /* ===================== MOVE ===================== */
 
 function moveSnake() {
-
+    
     let newSnake = [];
 
     for (let i = 0; i < snakePositionData.length; i++) {
@@ -127,6 +124,81 @@ function moveSnake() {
     }
 
     snakePositionData = newSnake;
+}
+
+/* ===================== LOCAL STORAGE ===================== */
+
+function pushingPlayerDataToLocalStorage(data, keys) {
+    if (data.name.length === 0) return;
+
+    let stringValueName = readingDataFromLocalStorage(keys)
+    stringValueName.push(data)
+    localStorage.setItem(stringValueName, JSON.stringify(data));
+}
+
+function readingDataFromLocalStorage(keys) {
+
+    let values = localStorage.getItem(keys);
+    let valuesJson =JSON.parse(values) 
+    return valuesJson;
+}
+
+function sortingData(values) {
+
+    for (let i = 0; i < values.length; i++) {
+        for (let j = 0; j < values.length - 1; j++) {
+
+            if (values[j + 1]) {
+
+                if (values[j].score < values[j + 1].score) {
+
+                    let temp = values[j];
+                    values[j] = values[j + 1];
+                    values[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    return values;
+}
+
+function deletePlayer(name) {
+    localStorage.removeItem(name);
+}
+
+function clearLeaderboard() {
+    localStorage.clear();
+}
+/* ===================== LEADERBOARD ===================== */
+
+function leaderboard(keys) {
+
+    let allData = readingDataFromLocalStorage(keys);
+    let sorted = sortingData(allData);
+    const TOP_10 = 10
+
+    creatingTable("leaderboard", "leaderboard", "section2");
+
+    let table = document.getElementById("leaderboard");
+
+    for (let i = 0; i < TOP_10; i++) {
+
+        if (!sorted[i]) continue;
+
+        let tr = document.createElement("tr");
+
+        let tdName = document.createElement("td");
+        tdName.innerHTML = sorted[i].name;
+
+        let tdScore = document.createElement("td");
+        tdScore.innerHTML = sorted[i].score;
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdScore);
+
+        table.appendChild(tr);
+    }
 }
 
 /* ===================== FOOD ===================== */
@@ -173,10 +245,10 @@ function checkCollision() {
 
     // WALL COLLISION FIX (AKURAT, NO EARLY DEATH)
     if (
-        head[0] <= -maxRow ||
-        head[0] >= maxRow ||
-        head[1] <= -maxCol ||
-        head[1] >= maxCol
+        head[0] < -maxRow ||
+        head[0] > maxRow ||
+        head[1] < -maxCol ||
+        head[1] > maxCol
     ) {
         isPlaying = false;
     }
@@ -193,6 +265,7 @@ function checkCollision() {
             snakePositionData[i][0] === head[0] &&
             snakePositionData[i][1] === head[1]
         ) {
+
             isPlaying = false;
         }
     }
@@ -220,12 +293,15 @@ function render() {
 /* ===================== INIT ===================== */
 
 appendingDiv("section1", "theGame", "main");
+appendingDiv("section2", "leaderboard", "main");
 
 creatingTable("snake_table", "snake_table", "section1");
 creatingTableValue("snake_table", valueBody);
 
 spawnFood();
 render(); // FIX: biar langsung keliatan
+
+
 
 /* ===================== LOOP ===================== */
 
@@ -245,7 +321,11 @@ function loop(time) {
 
         lastTime = time;
 
-        moveSnake();
+        // console.log(positionSnakeToAdd);
+        if(positionSnakeToAdd[0] !== 0 || positionSnakeToAdd[1] !== 0)
+        {
+            moveSnake();
+        }
         checkCollision();
         render();
     }
@@ -254,8 +334,31 @@ function loop(time) {
         requestAnimationFrame(loop);
     } else {
         document.getElementById("main").innerHTML =
-            `<h2>Game Over - Score: ${snakePositionData.length}</h2>`;
+            `<h2>Game Over - Score: ${snakePositionData.length}</h2> \n
+            <button id="mainMenu" class="btn btn-primary mb-3 w-25" >Back To Menu</button>`;
+            
+
+        let backToMenu = document.getElementById("mainMenu")
+        backToMenu.onclick = function()
+        {
+            window.location.href = "../Apis_Code/index.html";
+        }
+
+        if(!localStorage.key(1))
+        {
+            let dataToPush = [{name: playerOption.name, score: snakePositionData.length}]
+            localStorage.setItem("allPlayerData", JSON.stringify(dataToPush))
+            
+        }
+        else
+        {
+            let allValue = readingDataFromLocalStorage("allPlayerData")
+            allValue.push({name: playerOption.name, score: snakePositionData.length})
+            localStorage.setItem("allPlayerData", JSON.stringify(allValue))
+        }
     }
 }
+
+
 
 requestAnimationFrame(loop);

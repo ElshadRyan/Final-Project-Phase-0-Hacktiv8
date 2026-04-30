@@ -1,10 +1,10 @@
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
 
   // =========================
   // BUTTON YES
   // =========================
   document.getElementById("yesBtn").addEventListener("click", function() {
-    alert("Game Starting...");
+    window.location.href = "../Bram_Code/player_option.html";
   });
 
   // =========================
