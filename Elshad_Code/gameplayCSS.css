@@ -1,0 +1,48 @@
+body {
+  /* background-image: url(/Apis_Code/assets/background/background2.jpg); */
+  /* background-color: #0f172a; */
+  /* color: white; */
+  /* background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; */
+  
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #0d0d0d, #201f1f);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+button {
+  width: 200px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.snake_table
+{
+    margin: 12px auto;
+    border: 5px solid grey;
+}
+
+.leaderboard
+{
+    margin: 0 auto;
+    
+}
+
+#mainMenu {
+    width: 100%;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+}
+
+h2
+{
+    color: white;
+}
