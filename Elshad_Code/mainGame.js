@@ -94,11 +94,14 @@ window.addEventListener("keydown", (event) => {
 
     if (event.key === "ArrowUp" || event.key === "w") {
         if (positionSnakeToAdd[0] !== 1) positionSnakeToAdd = [-1, 0];
-    }else if (event.key === "ArrowDown" || event.key === "s") {
+    }
+    if (event.key === "ArrowDown" || event.key === "s") {
         if (positionSnakeToAdd[0] !== -1) positionSnakeToAdd = [1, 0];
-    }else if (event.key === "ArrowLeft" || event.key === "a") {
+    }
+    if (event.key === "ArrowLeft" || event.key === "a") {
         if (positionSnakeToAdd[1] !== 1) positionSnakeToAdd = [0, -1];
-    }else if (event.key === "ArrowRight" || event.key === "d") {
+    }
+    if (event.key === "ArrowRight" || event.key === "d") {
         if (positionSnakeToAdd[1] !== -1) positionSnakeToAdd = [0, 1];
     }
 });
@@ -106,7 +109,7 @@ window.addEventListener("keydown", (event) => {
 /* ===================== MOVE ===================== */
 
 function moveSnake() {
-
+    
     let newSnake = [];
 
     for (let i = 0; i < snakePositionData.length; i++) {
@@ -125,29 +128,25 @@ function moveSnake() {
 
 /* ===================== LOCAL STORAGE ===================== */
 
-function pushingDataToLocalStorage(data) {
+function pushingPlayerDataToLocalStorage(data, keys) {
     if (data.name.length === 0) return;
-    localStorage.setItem(data.name, JSON.stringify(data));
+
+    let stringValueName = readingDataFromLocalStorage(keys)
+    stringValueName.push(data)
+    localStorage.setItem(stringValueName, JSON.stringify(data));
 }
 
-function readingDataFromLocalStorage() {
+function readingDataFromLocalStorage(keys) {
 
-    let keys = [];
-    let values = [];
-
-    for (let i = 0; i < localStorage.length; i++) {
-        let k = localStorage.key(i);
-        keys.push(k);
-        values.push(JSON.parse(localStorage.getItem(k)));
-    }
-
-    return [keys, values];
+    let values = localStorage.getItem(keys);
+    let valuesJson =JSON.parse(values) 
+    return valuesJson;
 }
 
-function sortingData(keys, values) {
+function sortingData(values) {
 
-    for (let i = 0; i < keys.length; i++) {
-        for (let j = 0; j < keys.length - 1; j++) {
+    for (let i = 0; i < values.length; i++) {
+        for (let j = 0; j < values.length - 1; j++) {
 
             if (values[j + 1]) {
 
@@ -156,10 +155,6 @@ function sortingData(keys, values) {
                     let temp = values[j];
                     values[j] = values[j + 1];
                     values[j + 1] = temp;
-
-                    let tempKey = keys[j];
-                    keys[j] = keys[j + 1];
-                    keys[j + 1] = tempKey;
                 }
             }
         }
@@ -177,10 +172,10 @@ function clearLeaderboard() {
 }
 /* ===================== LEADERBOARD ===================== */
 
-function leaderboard() {
+function leaderboard(keys) {
 
-    let allData = readingDataFromLocalStorage();
-    let sorted = sortingData(allData[0], allData[1]);
+    let allData = readingDataFromLocalStorage(keys);
+    let sorted = sortingData(allData);
     const TOP_10 = 10
 
     creatingTable("leaderboard", "leaderboard", "section2");
@@ -270,6 +265,7 @@ function checkCollision() {
             snakePositionData[i][0] === head[0] &&
             snakePositionData[i][1] === head[1]
         ) {
+
             isPlaying = false;
         }
     }
@@ -307,8 +303,6 @@ render(); // FIX: biar langsung keliatan
 
 
 
-leaderboard()
-
 /* ===================== LOOP ===================== */
 
 let lastTime = 0;
@@ -327,7 +321,11 @@ function loop(time) {
 
         lastTime = time;
 
-        moveSnake();
+        // console.log(positionSnakeToAdd);
+        if(positionSnakeToAdd[0] !== 0 || positionSnakeToAdd[1] !== 0)
+        {
+            moveSnake();
+        }
         checkCollision();
         render();
     }
@@ -336,8 +334,31 @@ function loop(time) {
         requestAnimationFrame(loop);
     } else {
         document.getElementById("main").innerHTML =
-            `<h2>Game Over - Score: ${snakePositionData.length}</h2>`;
+            `<h2>Game Over - Score: ${snakePositionData.length}</h2> \n
+            <button id="mainMenu" class="btn btn-primary mb-3 w-25" >Back To Menu</button>`;
+            
+
+        let backToMenu = document.getElementById("mainMenu")
+        backToMenu.onclick = function()
+        {
+            window.location.href = "../Apis_Code/index.html";
+        }
+
+        if(!localStorage.key(1))
+        {
+            let dataToPush = [{name: playerOption.name, score: snakePositionData.length}]
+            localStorage.setItem("allPlayerData", JSON.stringify(dataToPush))
+            
+        }
+        else
+        {
+            let allValue = readingDataFromLocalStorage("allPlayerData")
+            allValue.push({name: playerOption.name, score: snakePositionData.length})
+            localStorage.setItem("allPlayerData", JSON.stringify(allValue))
+        }
     }
 }
+
+
 
 requestAnimationFrame(loop);
