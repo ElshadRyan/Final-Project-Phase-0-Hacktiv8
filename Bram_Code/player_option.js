@@ -94,7 +94,6 @@ continueBtn.onclick = function () {
     playerOption.difficulty = selectedDifficulty;
 
     localStorage.setItem("playerOption", JSON.stringify(playerOption));
-    window.location.href = "./Elshad_Code/gamplayWeb.html";
 
 
 
