@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>Orochimaru Game</title>
+
+    <style>
+        body {
+            background: radial-gradient(circle at center, #1a001f, #000000);
+            color: white;
+            font-family: 'Cinzel', serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-box {
+            text-align: center;
+            padding: 50px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 30px rgba(180, 0, 255, 0.4);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #d28cff;
+        }
+
+        p {
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .snake-btn {
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #6a00ff, #c300ff);
+            border: none;
+            color: white;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(195, 0, 255, 0.6);
+        }
+
+        .snake-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(195, 0, 255, 1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-box">
+        <h1>Do You Want to Become Orochimaru?</h1>
+        <p>Embrace the forbidden power... or stay human.</p>
+
+        <a href="Apis_Code/index.html" class="btn snake-btn">
+            🐍 BECOME A SNAKE
+        </a>
+    </div>
+
+</body>
+</html>
