@@ -1,416 +1,364 @@
+var data = localStorage.getItem("playerOption");
+var playerOption = data ? JSON.parse(data) : null;
 
-function appendingDiv(divId, divClass, IdToAppend)
-{
-
-    if(!IdToAppend)
-    {
-        return "id to append is required"
-    }
-
-    let appendedId = document.getElementById(IdToAppend)
-    let div = document.createElement("div")
-    if(divId)
-    {
-        div.setAttribute("id", divId)
-    }
-    if(divClass)
-    {
-        div.setAttribute("class", divClass)
-    }
-
-    appendedId.append(div)
+if (!playerOption) {
+    alert("Player data not found!");
+    window.location.href = "../Bram_Code/player_option.html";
 }
 
-function creatingTable(tableId, tableClass, IdToAppend)
-{
-    if(!IdToAppend)
-    {
-        return
-    }
+/* ===================== GAME STATE ===================== */
 
-    let table = document.createElement("table")
+let snakePositionData = [[0,0], [1,0], [2,0]];
+let positionSnakeToAdd = [-1, 0];
 
-    if(tableId)
-    {
-        table.setAttribute("id", tableId)
-    }
-    if(tableClass)
-    {
-        table.setAttribute("class", tableClass)
-    }
+let foodPosition = [];
+let isPlaying = true;
+let isStarted = false;
 
-    appendedId = document.getElementById(IdToAppend)
-    appendedId.append(table)
+/* ===================== DIFFICULTY ===================== */
+
+const playerChoice = {
+    difficulties: {
+        easy: { speed: 120, areaSize: [21, 21] },
+        medium: { speed: 80, areaSize: [25, 41] },
+        hard: { speed: 50, areaSize: [41, 61] }
+    }
+};
+
+let currDifficulty = playerOption.difficulty || "easy";
+let valueBody = playerChoice.difficulties[currDifficulty].areaSize;
+
+/* ===================== DOM ===================== */
+
+function appendingDiv(id, cls, parentId) {
+    let parent = document.getElementById(parentId);
+    if (!parent) return;
+
+    let div = document.createElement("div");
+    if (id) div.id = id;
+    if (cls) div.className = cls;
+
+    parent.appendChild(div);
 }
 
-function creatingTableValue(IdToAppend, valueForBody, valueForHead)
-{
+function creatingTable(id, cls, parentId) {
+    let parent = document.getElementById(parentId);
+    if (!parent) return;
 
-    if(!IdToAppend)
-    {
-        return "Id is required"
-    }
-    if(valueForBody.length === 0)
-    {
-        return "Gaada Row atau Col nya"
-    }
+    let table = document.createElement("table");
+    table.id = id;
+    table.className = cls;
 
-    let appendedId = document.getElementById(IdToAppend)
-
-    creatingTableBody(valueForBody, IdToAppend)
-
-
+    parent.appendChild(table);
 }
 
-function creatingTableBody(value, tableElement)
-{
-    if(!value)
-    {
-        return "No Value, Cant Create Table"
+function creatingTableValue(id, size) {
+    creatingTableBody(size, id);
+}
+
+function creatingTableBody(size, tableId) {
+
+    let table = document.getElementById(tableId);
+    if (!table) return;
+
+    let tbody = document.createElement("tbody");
+
+    let hR = Math.floor(size[0] / 2);
+    let wR = Math.floor(size[1] / 2);
+
+    for (let i = 0; i < size[0]; i++) {
+        let tr = document.createElement("tr");
+
+        for (let j = 0; j < size[1]; j++) {
+            let td = document.createElement("td");
+
+            td.id = (i - hR) + "r" + (j - wR) + "c";
+            td.style.width = "15px";
+            td.style.height = "15px";
+            td.style.background = "black";
+
+            tr.appendChild(td);
+        }
+
+        tbody.appendChild(tr);
     }
 
-    let tableHeightRadius = Math.ceil(value.length/2)
-    let tableWidthRadius = Math.ceil(value[0].length/2)
+    table.appendChild(tbody);
+}
 
-    let table = document.getElementById(tableElement)
-    let bodyTable = document.createElement('tbody')
+/* ===================== INPUT ===================== */
 
-    value.forEach((element, indexCol) => {
-        let rowTable =  document.createElement('tr');
-        element.forEach((value, indexRow) => {
-            let dataTable = document.createElement('td')
-            let coordinateID = "" +  (indexCol - tableHeightRadius)
-            coordinateID +=  (indexRow - tableWidthRadius ) 
-            dataTable.setAttribute("id", coordinateID)
-            dataTable.setAttribute("style", "background-color: black")
-            dataTable.setAttribute("width", "15px")
-            dataTable.setAttribute("height", "15px")
-            dataTable.innerHTML = value
-            rowTable.append(dataTable)
-        });
-        bodyTable.append(rowTable)
-    });
+window.addEventListener("keydown", (event) => {
 
-    table.append(bodyTable)
+    isStarted = true;
+
+    if (event.key === "ArrowUp" || event.key === "w") {
+        if (positionSnakeToAdd[0] !== 1) positionSnakeToAdd = [-1, 0];
+    }
+    if (event.key === "ArrowDown" || event.key === "s") {
+        if (positionSnakeToAdd[0] !== -1) positionSnakeToAdd = [1, 0];
+    }
+    if (event.key === "ArrowLeft" || event.key === "a") {
+        if (positionSnakeToAdd[1] !== 1) positionSnakeToAdd = [0, -1];
+    }
+    if (event.key === "ArrowRight" || event.key === "d") {
+        if (positionSnakeToAdd[1] !== -1) positionSnakeToAdd = [0, 1];
+    }
+});
+
+/* ===================== MOVE ===================== */
+
+function moveSnake() {
     
+    let newSnake = [];
+
+    for (let i = 0; i < snakePositionData.length; i++) {
+        if (i === 0) {
+            newSnake.push([
+                snakePositionData[i][0] + positionSnakeToAdd[0],
+                snakePositionData[i][1] + positionSnakeToAdd[1]
+            ]);
+        } else {
+            newSnake.push(snakePositionData[i - 1]);
+        }
+    }
+
+    snakePositionData = newSnake;
 }
 
-function positioningTheSnakes(snakePosition, currTable)
-{
-    tableHeightRadius = Math.ceil(currTable.length/2)
-    tableWidthRadius = Math.ceil(currTable[0].length/2)
+/* ===================== LOCAL STORAGE ===================== */
 
-    for(let i = 0; i < currTable.length; i++)
-    {
-        for(let j = 0; j < currTable[i].length; j++)
-        {
-            for(let k = 0; k < snakePosition.length; k++)
-            {
-                
-                if((i - tableHeightRadius) === snakePosition[k][0] && (j - tableWidthRadius) === snakePosition[k][1])
-                {
-                    let idToSearch = "" + (i - tableHeightRadius)
-                    idToSearch += (j - tableWidthRadius)
-                    let tableCoordinates = document.getElementById(idToSearch)
-                    // console.log(idToSearch);
+function pushingPlayerDataToLocalStorage(data, keys) {
+    if (data.name.length === 0) return;
 
-                    tableCoordinates.setAttribute("style", "background-color: green")
+    let stringValueName = readingDataFromLocalStorage(keys)
+    stringValueName.push(data)
+    localStorage.setItem(stringValueName, JSON.stringify(data));
+}
 
+function readingDataFromLocalStorage(keys) {
+
+    let values = localStorage.getItem(keys);
+    let valuesJson =JSON.parse(values) 
+    return valuesJson;
+}
+
+function sortingData(values) {
+
+    for (let i = 0; i < values.length; i++) {
+        for (let j = 0; j < values.length - 1; j++) {
+
+            if (values[j + 1]) {
+
+                if (values[j].score < values[j + 1].score) {
+
+                    let temp = values[j];
+                    values[j] = values[j + 1];
+                    values[j + 1] = temp;
                 }
             }
         }
     }
+
+    return values;
 }
 
-function playerInputToChangeSnakePosition(snakePosition)
-{
-    window.addEventListener("keydown", function (event)
-    {
-        if(event.key === "ArrowUp" || event.key === "w")  
-        {
-            if(positionSnakeToAdd[0] !== 1)
-            {
-                positionSnakeToAdd = [-1, 0]
-            }
-            // console.log("Naik");
-            // console.log(snakePositionData);
-        }
-        else if(event.key === "ArrowDown" || event.key === "s")
-        {
-            if(positionSnakeToAdd[0] !== -1)
-            {
-                positionSnakeToAdd = [1, 0]
-            }
-            // console.log("Down");
-        }
-        else if(event.key === "ArrowLeft" || event.key === "a")
-        {
-            if(positionSnakeToAdd[1] !== 1)
-            {
-                positionSnakeToAdd = [0, -1]
-            }
-            // console.log("Left");
-        }
-        else if(event.key === "ArrowRight" || event.key === "d")
-        {
-            if(     positionSnakeToAdd[1] !== -1)
-            {
-                positionSnakeToAdd = [0, 1]
-            }
-            // console.log("Right");
-        }
-    })
-
+function deletePlayer(name) {
+    localStorage.removeItem(name);
 }
 
-function adding2MatrixOrPosition(snakePosition, positionToAdd)
-{
-    if(positionToAdd[0] === 0 && positionToAdd[1] === 0)
-    {
-        return null
+function clearLeaderboard() {
+    localStorage.clear();
+}
+/* ===================== LEADERBOARD ===================== */
+
+function leaderboard(keys) {
+
+    let allData = readingDataFromLocalStorage(keys);
+    let sorted = sortingData(allData);
+    const TOP_10 = 10
+
+    creatingTable("leaderboard", "leaderboard", "section2");
+
+    let table = document.getElementById("leaderboard");
+
+    for (let i = 0; i < TOP_10; i++) {
+
+        if (!sorted[i]) continue;
+
+        let tr = document.createElement("tr");
+
+        let tdName = document.createElement("td");
+        tdName.innerHTML = sorted[i].name;
+
+        let tdScore = document.createElement("td");
+        tdScore.innerHTML = sorted[i].score;
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdScore);
+
+        table.appendChild(tr);
     }
-
-
-    let newPos = []
-    let prevPos = []
-    for(let i = 0; i < snakePosition.length; i++)
-    {
-        let newIndividualPos = []
-        if(i === 0)
-        {
-            newIndividualPos.push(snakePosition[i][0] + positionToAdd[0])
-            newIndividualPos.push(snakePosition[i][1] + positionToAdd[1])
-            newPos.push(newIndividualPos)
-            prevPos = snakePosition[i]
-            continue
-        }
-                
-        newPos.push(prevPos)
-        prevPos = snakePosition[i]
-    }
-    
-    return newPos
-
 }
 
-function creatingFood(row, col, snakePosition)
-{
-    let foodCoordinate = []
-    const DIMENSION = 2
-    let canPutFood = false
+/* ===================== FOOD ===================== */
 
-    tableHeightRadius = Math.ceil(row/2)    
-    tableWidthRadius = Math.ceil(col/2)
-    while(true)
-    {
-        let tempFoodCoordinate = []
+function spawnFood() {
 
-        tempFoodCoordinate.push(Math.floor(Math.random()*row) - tableHeightRadius)
-        tempFoodCoordinate.push(Math.floor(Math.random()*col) - tableWidthRadius)  
-            
-        // console.log(tempFoodCoordinate);
-        for (let i = 0; i < snakePosition.length; i++) {
-            if(tempFoodCoordinate[0] === snakePosition[i][0] && tempFoodCoordinate[1] === snakePosition[i][1])
-            {
-                // console.log("Masuk");
-                canPutFood = false
-                break
+    let hR = Math.floor(valueBody[0] / 2);
+    let wR = Math.floor(valueBody[1] / 2);
+
+    while (true) {
+
+        let food = [
+            Math.floor(Math.random() * valueBody[0]) - hR,
+            Math.floor(Math.random() * valueBody[1]) - wR
+        ];
+
+        let safe = true;
+
+        for (let i = 0; i < snakePositionData.length; i++) {
+            if (
+                snakePositionData[i][0] === food[0] &&
+                snakePositionData[i][1] === food[1]
+            ) {
+                safe = false;
+                break;
             }
-            canPutFood = true
         }
 
-        if(canPutFood)
-        {
-            foodCoordinate = tempFoodCoordinate
+        if (safe) {
+            foodPosition = food;
             break;
         }
-    }        
-    
-    if(isEaten)
-    {
-        foodPosition = foodCoordinate
-    }
-
-
-    for (let i = 0; i < row; i++) {
-        for (let j = 0; j < col; j++) {
-            // console.log(foodPosition);
-            if((i - tableHeightRadius) === foodPosition[0] && (j - tableWidthRadius) === foodPosition[1])
-                {
-                    let idToSearch = "" + (i - tableHeightRadius)
-                    idToSearch += (j - tableWidthRadius)
-                    let tableCoordinates = document.getElementById(idToSearch)
-                    // console.log(tableCoordinates);
-                    isEaten = false
-                    tableCoordinates.setAttribute("style", "background-color: red")
-
-                }
-        }        
-    }
-
-}
-
-function detectingObstacles(snakePosition, foodCoordinate, row, col)
-{
-    tableHeightRadius = Math.ceil(row/2)
-    tableWidthRadius = Math.ceil(col/2)
-
-    let snakeRowPos = snakePosition[0][0]
-    let snakeColPos = snakePosition[0][1]
-
-    if((snakeColPos + tableHeightRadius) === col || (snakeRowPos + tableWidthRadius) === row || (snakeRowPos + tableHeightRadius) < 0 || (snakeColPos + tableWidthRadius) < 0)
-    {
-        isPlaying = false
-    }
-    
-
-    if(snakePosition[0][0] === foodCoordinate[0] && snakePosition[0][1] === foodCoordinate[1])
-    {
-        playerData.score++
-        isEaten = true
-        let snakeLastIndex = snakePosition.length-1
-        snakePosition.push(snakePosition[snakeLastIndex])
-        console.log(playerData.score);
-    }
-
-    for (let i = 1; i < snakePosition.length; i++) {
-        if((snakePosition[i][0] === snakeRowPos && snakePosition[i][1] === snakeColPos))
-        {
-            isPlaying = false
-            break
-        }
-    }
-
-}
-    
-//Update or Create
-function pushingDataToLocalStorage(data)
-{
-    localStorage.setItem(`${data.name}`, JSON.stringify(data))
-}
-
-//Read
-function readingDataFromLocalStorage()
-{
-    let allKeys = []
-    let allValue = []
-
-    for(let i = 0; i < localStorage.length; i++)
-    {
-        let currKey = localStorage.key(i)
-        allKeys.push(currKey)
-        allValue.push(JSON.parse(localStorage.getItem(currKey)))
     }
 }
 
-//delete
-function deleteDataFromLocalStorage(data)
-{
-    localStorage.removeItem(`${data.name}`)
-}
+/* ===================== COLLISION FIXED ===================== */
 
-function sortingData(keys, values)
-{
-    for(let i = 0; i < keys.length; i++)
-    {
-        let tempChar = ''
-        let tempValue = {}
-        for(let j = 0; j < keys.length; j++)
-        {
-            if(values[j].score < values[j+1].score)
-            {
-                tempChar = keys[j]
-                keys[j] = keys[j+1]
-                keys[j+1] = tempChar
+function checkCollision() {
 
-                tempValue = values[j]
-                values[j] = values[j+1]
-                values[j+1] = tempValue
-            }
+    let head = snakePositionData[0];
+
+    let maxRow = Math.floor(valueBody[0] / 2);
+    let maxCol = Math.floor(valueBody[1] / 2);
+
+    // WALL COLLISION FIX (AKURAT, NO EARLY DEATH)
+    if (
+        head[0] < -maxRow ||
+        head[0] > maxRow ||
+        head[1] < -maxCol ||
+        head[1] > maxCol
+    ) {
+        isPlaying = false;
+    }
+
+    // FOOD
+    if (head[0] === foodPosition[0] && head[1] === foodPosition[1]) {
+        snakePositionData.push([...snakePositionData[snakePositionData.length - 1]]);
+        spawnFood();
+    }
+
+    // SELF COLLISION
+    for (let i = 1; i < snakePositionData.length; i++) {
+        if (
+            snakePositionData[i][0] === head[0] &&
+            snakePositionData[i][1] === head[1]
+        ) {
+
+            isPlaying = false;
         }
     }
 }
 
-function leaderboard()
-{
-    
+/* ===================== RENDER ===================== */
+
+function render() {
+
+    document.querySelectorAll("td").forEach(td => {
+        td.style.background = "black";
+    });
+
+    // snake
+    snakePositionData.forEach(s => {
+        let el = document.getElementById(s[0] + "r" + s[1] + "c");
+        if (el) el.style.background = playerOption.snakeColour;
+    });
+
+    // food
+    let foodEl = document.getElementById(foodPosition[0] + "r" + foodPosition[1] + "c");
+    if (foodEl) foodEl.style.background = "red";
 }
 
-let valueBody = [
- [" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-,[" "," "," "," "," "," "," "," "," "," "," "]
-]
+/* ===================== INIT ===================== */
+
+appendingDiv("section1", "theGame", "main");
+appendingDiv("section2", "leaderboard", "main");
+
+creatingTable("snake_table", "snake_table", "section1");
+creatingTableValue("snake_table", valueBody);
+
+spawnFood();
+render(); // FIX: biar langsung keliatan
 
 
-let snakePositionData = [[0,0], [1,0], [2,0]]
-let positionSnakeToAdd = [0,0]
-let foodPosition = []
-let isEaten = true
-let isPlaying = true
 
-let playerData = {
-    score: 0,
-    name: '' 
-}
+/* ===================== LOOP ===================== */
 
-appendingDiv("section1", "section1", "main")
-let fps = 1000/5
+let lastTime = 0;
+let speed = playerChoice.difficulties[currDifficulty].speed;
 
-// fetch("http://127.0.0.1:5500/Elshad_Code/gamplayWeb.html")
-// window.location.reload()
-function main(timestamp)
-{
-    
-    // Stop after 2 seconds
-    setTimeout(() => {        
-        
-        let tableToRemove = document.getElementById("snake_table")
-        
-        if(tableToRemove)
+function loop(time) {
+
+    if (!isStarted) {
+        requestAnimationFrame(loop);
+        return;
+    }
+
+    if (!lastTime) lastTime = time;
+
+    if (time - lastTime > speed) {
+
+        lastTime = time;
+
+        // console.log(positionSnakeToAdd);
+        if(positionSnakeToAdd[0] !== 0 || positionSnakeToAdd[1] !== 0)
         {
-            tableToRemove.remove()
+            moveSnake();
+        }
+        checkCollision();
+        render();
+    }
+
+    if (isPlaying) {
+        requestAnimationFrame(loop);
+    } else {
+        document.getElementById("main").innerHTML =
+            `<h2>Game Over - Score: ${snakePositionData.length}</h2> \n
+            <button id="mainMenu" class="btn btn-primary mb-3 w-25" >Back To Menu</button>`;
+            
+
+        let backToMenu = document.getElementById("mainMenu")
+        backToMenu.onclick = function()
+        {
+            window.location.href = "../Apis_Code/index.html";
         }
 
-        creatingTable("snake_table", "snake_table", "section1")
-        creatingTableValue("snake_table", valueBody)
-        positioningTheSnakes(snakePositionData, valueBody)
-        creatingFood(valueBody.length, valueBody[0].length, snakePositionData)
-        
-        if(isPlaying)
+        if(!localStorage.key(1))
         {
-            window.addEventListener("load", playerInputToChangeSnakePosition(snakePositionData))
-            let tempSnakePositionData = adding2MatrixOrPosition(snakePositionData, positionSnakeToAdd)
-            if(tempSnakePositionData !== null)
-            {
-                snakePositionData = tempSnakePositionData
-            }
-            detectingObstacles(snakePositionData, foodPosition, valueBody.length, valueBody[0].length)
+            let dataToPush = [{name: playerOption.name, score: snakePositionData.length}]
+            localStorage.setItem("allPlayerData", JSON.stringify(dataToPush))
+            
         }
-
-        
-
-
-        requestAnimationFrame(main);
-        
-        positioningTheSnakes(valueBody, snakePositionData, "snake_table")
-        }, fps);
-    
+        else
+        {
+            let allValue = readingDataFromLocalStorage("allPlayerData")
+            allValue.push({name: playerOption.name, score: snakePositionData.length})
+            localStorage.setItem("allPlayerData", JSON.stringify(allValue))
+        }
+    }
 }
 
-// getCreatedTable("snake_table", "snake_table", "section1")
-// creatingTableValue("snake_table", valueBody)
-// positioningTheSnakes(snakePosition, valueBody)
-
-requestAnimationFrame(main)
 
 
-
+requestAnimationFrame(loop);
