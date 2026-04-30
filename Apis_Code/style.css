@@ -190,9 +190,42 @@ button {
   margin-top: 10px;
 }
 
+ /* .credit-item, .text-kata p {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  color: #fcfc03;
+  margin-top: 10px;
+} */
+
 .credit-scroll:hover {
   animation-play-state: paused;
 }
+
+.pixel-btn:hover {
+  transform: scale(1.05);
+}
+
+/* .snake-anim {
+  position: fixed;
+  bottom: 60px;
+  right: -150px;
+
+  width: 120px; /* sesuaikan */
+  /* image-rendering: pixelated;
+
+  z-index: 0;
+
+  animation: snakeMove 12s linear infinite;
+} */
+
+/* @keyframes snakeMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-120vw);
+  }
+}  */
 
 /* ANIMASI */
 @keyframes scrollUp {
